@@ -3,6 +3,10 @@
     "configurePresets": [
         {
             "name": "default",
+            "hidden": true
+        },
+        {
+            "name": "tf2",
             "hidden": true,
             "cacheVariables": {
                 "HL2SDK_TARGET": "tf2"
@@ -24,60 +28,28 @@
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
-
         {
-            "name": "debug-win",
-            "inherits": "debug",
+            "name": "win",
+            "hidden": true,
             "generator": "Visual Studio 18 2026"
         },
         {
-            "name": "release-win",
-            "inherits": "release",
-            "generator": "Visual Studio 18 2026"
-        },
-
-        {
-            "name": "debug-win32",
-            "displayName": "Debug (Windows 32-bit)",
-            "inherits": "debug-win",
-            "binaryDir": "build/debug-win32",
+            "name": "win32",
+            "hidden": true,
             "architecture": {
                 "value": "Win32"
             }
         },
         {
-            "name": "release-win32",
-            "displayName": "Release (Windows 32-bit)",
-            "inherits": "release-win",
-            "binaryDir": "build/release-win32",
-            "architecture": {
-                "value": "Win32"
-            }
-        },
-        {
-            "name": "debug-win64",
-            "displayName": "Debug (Windows 64-bit)",
-            "inherits": "debug-win",
-            "binaryDir": "build/debug-win64",
+            "name": "win64",
+            "hidden": true,
             "architecture": {
                 "value": "x64"
             }
         },
         {
-            "name": "release-win64",
-            "displayName": "Release (Windows 64-bit)",
-            "inherits": "release-win",
-            "binaryDir": "build/release-win64",
-            "architecture": {
-                "value": "x64"
-            }
-        },
-
-        {
-            "name": "debug-linux32",
-            "displayName": "Debug (Linux 32-bit)",
-            "inherits": "debug",
-            "binaryDir": "build/debug-linux32",
+            "name": "linux32",
+            "hidden": true,
             "architecture": {
                 "value": "x86",
                 "strategy": "external"
@@ -88,24 +60,8 @@
             }
         },
         {
-            "name": "release-linux32",
-            "displayName": "Release (Linux 32-bit)",
-            "inherits": "release",
-            "binaryDir": "build/release-linux32",
-            "architecture": {
-                "value": "x86",
-                "strategy": "external"
-            },
-            "environment": {
-                "CFLAGS": "-m32",
-                "CXXFLAGS": "-m32"
-            }
-        },
-        {
-            "name": "debug-linux64",
-            "displayName": "Debug (Linux 64-bit)",
-            "inherits": "debug",
-            "binaryDir": "build/debug-linux64",
+            "name": "linux64",
+            "hidden": true,
             "architecture": {
                 "value": "amd64",
                 "strategy": "external"
@@ -115,19 +71,55 @@
                 "CXXFLAGS": "-m64"
             }
         },
+
         {
-            "name": "release-linux64",
-            "displayName": "Release (Linux 64-bit)",
-            "inherits": "release",
-            "binaryDir": "build/release-linux64",
-            "architecture": {
-                "value": "amd64",
-                "strategy": "external"
-            },
-            "environment": {
-                "CFLAGS": "-m64",
-                "CXXFLAGS": "-m64"
-            }
+            "name": "debug-tf2-win32",
+            "displayName": "Debug (Team Fortress 2) (Windows 32-bit)",
+            "inherits": ["debug", "tf2", "win32"],
+            "binaryDir": "build/debug-tf2-win32"
+        },
+        {
+            "name": "release-tf2-win32",
+            "displayName": "Release (Team Fortress 2) (Windows 32-bit)",
+            "inherits": ["release", "tf2", "win32"],
+            "binaryDir": "build/release-tf2-win32"
+        },
+        {
+            "name": "debug-tf2-win64",
+            "displayName": "Debug (Team Fortress 2) (Windows 64-bit)",
+            "inherits": ["debug", "tf2", "win64"],
+            "binaryDir": "build/debug-tf2-win64"
+        },
+        {
+            "name": "release-tf2-win64",
+            "displayName": "Release (Team Fortress 2) (Windows 64-bit)",
+            "inherits": ["release", "tf2", "win64"],
+            "binaryDir": "build/release-tf2-win64"
+        },
+
+        {
+            "name": "debug-tf2-linux32",
+            "displayName": "Debug (Team Fortress 2) (Linux 32-bit)",
+            "inherits": ["debug", "tf2", "linux32"],
+            "binaryDir": "build/debug-tf2-linux32"
+        },
+        {
+            "name": "release-tf2-linux32",
+            "displayName": "Release (Team Fortress 2) (Linux 32-bit)",
+            "inherits": ["release", "tf2", "linux32"],
+            "binaryDir": "build/release-tf2-linux32"
+        },
+        {
+            "name": "debug-tf2-linux64",
+            "displayName": "Debug (Team Fortress 2) (Linux 64-bit)",
+            "inherits": ["debug", "tf2", "linux64"],
+            "binaryDir": "build/debug-tf2-linux64"
+        },
+        {
+            "name": "release-tf2-linux64",
+            "displayName": "Release (Team Fortress 2) (Linux 64-bit)",
+            "inherits": ["release", "tf2", "linux64"],
+            "binaryDir": "build/release-tf2-linux64"
         }
     ]
 }

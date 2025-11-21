@@ -4,7 +4,8 @@ add_library(example-ext SHARED
 
 target_include_directories(example-ext PUBLIC ./)
 
-target_link_libraries(example-ext PUBLIC smsdk_ext hl2sdk)
+message("${HL2SDK_LIBRARY_NAME}")
+target_link_libraries(example-ext PUBLIC smsdk_ext ${HL2SDK_LIBRARY_NAME})
 
 set_target_properties(example-ext PROPERTIES PREFIX "")
 
