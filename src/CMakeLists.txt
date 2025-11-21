@@ -4,12 +4,14 @@ add_library(example-ext SHARED
 
 target_include_directories(example-ext PUBLIC ./)
 
-target_link_libraries(example-ext PUBLIC smsdk_ext)
+target_link_libraries(example-ext PUBLIC smsdk_ext hl2sdk)
 
 set_target_properties(example-ext PROPERTIES PREFIX "")
 
 if(WIN32)
-    set_target_properties(example-ext PROPERTIES SUFFIX ".ext.dll")
+    set_target_properties(example-ext PROPERTIES SUFFIX ".ext.${HL2SDK_EXTENSION}.dll")
+elseif(APPLE)
+    set_target_properties(example-ext PROPERTIES SUFFIX ".ext.${HL2SDK_EXTENSION}.dylib")
 else()
-    set_target_properties(example-ext PROPERTIES SUFFIX ".ext.so")
+    set_target_properties(example-ext PROPERTIES SUFFIX ".ext.${HL2SDK_EXTENSION}.so")
 endif()

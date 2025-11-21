@@ -1,0 +1,62 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "cacheVariables": {
+                "HL2SDK_TARGET": "tf2"
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": "default",
+            "hidden": true,
+            "binaryDir": "build/debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": "default",
+            "hidden": true,
+            "binaryDir": "build/release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "debug-32",
+            "displayName": "Debug (32-bit)",
+            "inherits": "debug",
+            "architecture": {
+                "value": "x86"
+            }
+        },
+        {
+            "name": "release-32",
+            "displayName": "Release (32-bit)",
+            "inherits": "release",
+            "architecture": {
+                "value": "x86"
+            }
+        },
+        {
+            "name": "debug-64",
+            "displayName": "Debug (64-bit)",
+            "inherits": "debug",
+            "architecture": {
+                "value": "x86_64"
+            }
+        },
+        {
+            "name": "release-64",
+            "displayName": "Release (64-bit)",
+            "inherits": "release",
+            "architecture": {
+                "value": "x86_64"
+            }
+        }
+    ]
+}

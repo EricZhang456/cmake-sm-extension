@@ -1,3 +1,6 @@
 [submodule "lib/sourcemod"]
 	path = lib/sourcemod
 	url = https://github.com/alliedmodders/sourcemod
+[submodule "lib/hl2sdk-manifests"]
+	path = lib/hl2sdk-manifests
+	url = https://github.com/alliedmodders/hl2sdk-manifests

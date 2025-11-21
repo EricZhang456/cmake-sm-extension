@@ -14,6 +14,13 @@ target_include_directories(smsdk INTERFACE
 )
 target_link_libraries(smsdk INTERFACE amtl)
 
+add_subdirectory(${SOURCEMOD_PATH}/public/safetyhook)
+
+add_library(jit INTERFACE
+    ${SOURCEMOD_PATH}/public/jit/jit_helpers.h
+    ${SOURCEMOD_PATH}/public/jit/x86/x86_macros.h
+)
+
 add_library(CDetour INTERFACE)
 target_sources(CDetour INTERFACE
     ${SOURCEMOD_PATH}/public/CDetour/detourhelpers.h
@@ -21,9 +28,10 @@ target_sources(CDetour INTERFACE
     ${SOURCEMOD_PATH}/public/CDetour/detours.h
 )
 
-add_subdirectory(${SOURCEMOD_PATH}/public/safetyhook)
+option(ENABLE_CDETOUR "Enable CDetour" OFF)
 
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+target_link_libraries(CDetour INTERFACE safetyhook jit smsdk)
+
 add_library(Zydis SHARED
     ${SOURCEMOD_PATH}/public/safetyhook/zydis/Zydis.c
 )
@@ -32,4 +40,9 @@ target_include_directories(safetyhook PRIVATE ${SOURCEMOD_PATH}/public/safetyhoo
 
 add_library(smsdk_ext INTERFACE)
 target_sources(smsdk_ext INTERFACE ${SOURCEMOD_PATH}/public/smsdk_ext.cpp)
-target_link_libraries(smsdk_ext INTERFACE smsdk safetyhook)
+target_link_libraries(smsdk_ext INTERFACE smsdk)
+
+if(ENABLE_CDETOUR)
+    add_compile_definitions(SMEXT_ENABLE_GAMECONF)
+    target_link_libraries(smsdk_ext INTERFACE CDetour)
+endif()
