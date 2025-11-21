@@ -49,39 +49,39 @@ endif()
 
 file(READ "${HL2SDK_MANIFEST_PATH}" HL2SDK_MANIFEST)
 
-string(JSON HK2SDK_PATH_ENV_VAR GET "${HL2SDK_MANIFEST}" env_var)
-string(JSON HK2SDK_NAME GET "${HL2SDK_MANIFEST}" name)
+string(JSON HL2SDK_PATH_ENV_VAR GET "${HL2SDK_MANIFEST}" env_var)
+string(JSON HL2SDK_NAME GET "${HL2SDK_MANIFEST}" name)
 
-set(HL2SDK_LIBRARY_NAME "hl2sdk-${HK2SDK_NAME}")
+set(HL2SDK_LIBRARY_NAME "hl2sdk-${HL2SDK_NAME}")
 add_library(${HL2SDK_LIBRARY_NAME} INTERFACE)
 
-set(HL2SDK_PATH $ENV{${HK2SDK_PATH_ENV_VAR}})
+set(HL2SDK_PATH $ENV{${HL2SDK_PATH_ENV_VAR}})
 if(NOT(HL2SDK_PATH AND EXISTS "${HL2SDK_PATH}"))
-    message(STATUS "Fetching Source SDK for ${HK2SDK_NAME}")
+    message(STATUS "Fetching Source SDK for ${HL2SDK_NAME}")
     FetchContent_Declare(
-        HL2SDK_${HK2SDK_NAME}
+        HL2SDK_${HL2SDK_NAME}
         GIT_REPOSITORY https://github.com/alliedmodders/hl2sdk.git
-        GIT_TAG ${HK2SDK_NAME}
+        GIT_TAG ${HL2SDK_NAME}
     )
-    FetchContent_MakeAvailable(HL2SDK_${HK2SDK_NAME})
-    string(TOLOWER "HL2SDK_${HK2SDK_NAME}" HL2SDK_SOURCE_DIR_ID)
+    FetchContent_MakeAvailable(HL2SDK_${HL2SDK_NAME})
+    string(TOLOWER "HL2SDK_${HL2SDK_NAME}" HL2SDK_SOURCE_DIR_ID)
     set(HL2SDK_PATH ${${HL2SDK_SOURCE_DIR_ID}_SOURCE_DIR})
 endif()
 
 message(STATUS "Using Source SDK at ${HL2SDK_PATH}")
 
-string(JSON HK2SDK_CODE GET "${HL2SDK_MANIFEST}" code)
-string(JSON HK2SDK_DEFINE GET "${HL2SDK_MANIFEST}" define)
+string(JSON HL2SDK_CODE GET "${HL2SDK_MANIFEST}" code)
+string(JSON HL2SDK_DEFINE GET "${HL2SDK_MANIFEST}" define)
 string(JSON HL2SDK_EXTENSION GET "${HL2SDK_MANIFEST}" extension)
 
 add_compile_definitions(
-    SOURCE_ENGINE=${HK2SDK_CODE}
+    SOURCE_ENGINE=${HL2SDK_CODE}
     ${HL2SDK_DEFINE}
 )
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     set(TARGET_SDKS_REMOVE_DEFS "sdk2013" "bms" "pvkii" "tf2" "css" "dods" "hl2dm")
-    if("${HK2SDK_NAME}" IN_LIST TARGET_SDKS_REMOVE_DEFS)
+    if("${HL2SDK_NAME}" IN_LIST TARGET_SDKS_REMOVE_DEFS)
         remove_definitions(
             -Dstricmp=strcasecmp
             -D_stricmp=strcasecmp
@@ -95,13 +95,21 @@ if(MSVC)
     add_compile_definitions(
         COMPILER_MSVC
         WIN32
+        _CRT_SECURE_NO_DEPRECATE
+        _CRT_SECURE_NO_WARNINGS
+        _CRT_NONSTDC_NO_DEPRECATE
+        _ITERATOR_DEBUG_LEVEL=0
     )
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+
     # if 64-bit
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
         add_compile_definitions(
             COMPILER_MSVC64
             WIN64
         )
+    else()
+        add_compile_definitions(COMPILER_MSVC32)
     endif()
 
     if(MSVC_VERSION GREATER_EQUAL 1900)
@@ -163,6 +171,7 @@ parse_json_list(HL2SDK_ARCH_DEFINES "${HL2SDK_ARCH_DEFINES_PRE}")
 add_compile_definitions(${HL2SDK_ARCH_DEFINES})
 add_compile_options(${HL2SDK_ARCH_CFLAGS})
 
+set(TARGET_TIER1_SDKS "tf2" "dods" "css" "hl2dm")
 if(UNIX)
     json_get_nullable(HL2SDK_ARCH_POSTLINK_LIBS_PRE "${HL2SDK_ARCH_SECTION}" postlink_libs)
     parse_json_list(HL2SDK_ARCH_POSTLINK_LIBS "${HL2SDK_ARCH_POSTLINK_LIBS_PRE}")
@@ -186,6 +195,20 @@ if(UNIX)
             endif()
             set_target_properties(${HL2SDK_LIBRARY_NAME} PROPERTIES LINK_OPTIONS "${HL2SDK_LINK_OPTIONS}")
         endif()
+
+        if("${HL2SDK_NAME}" IN_LIST TARGET_TIER1_SDKS)
+            if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+                target_link_libraries(${HL2SDK_LIBRARY_NAME} INTERFACE
+                    ${HL2SDK_PATH}/lib/public/linux64/tier1.a
+                    ${HL2SDK_PATH}/lib/public/linux64/mathlib.a
+                )
+            else()
+                target_link_libraries(${HL2SDK_LIBRARY_NAME} INTERFACE
+                    ${HL2SDK_PATH}/lib/public/linux/tier1_i486.a
+                    ${HL2SDK_PATH}/lib/public/linux/mathlib_i486.a
+                )
+            endif()
+        endif()
     endif()
 elseif(WIN32)
     json_get_nullable(HL2SDK_ARCH_LIBS_PRE "${HL2SDK_ARCH_SECTION}" libs)
@@ -193,4 +216,17 @@ elseif(WIN32)
     foreach(lib IN LISTS HL2SDK_ARCH_LIBS)
         target_link_libraries(${HL2SDK_LIBRARY_NAME} INTERFACE "${HL2SDK_PATH}/${lib}")
     endforeach()
+    if("${HL2SDK_NAME}" IN_LIST TARGET_TIER1_SDKS)
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            target_link_libraries(${HL2SDK_LIBRARY_NAME} INTERFACE
+                ${HL2SDK_PATH}/lib/public/x64/tier1.lib
+                ${HL2SDK_PATH}/lib/public/x64/mathlib.lib
+            )
+        else()
+            target_link_libraries(${HL2SDK_LIBRARY_NAME} INTERFACE
+                ${HL2SDK_PATH}/lib/public/x86/tier1.lib
+                ${HL2SDK_PATH}/lib/public/x86/mathlib.lib
+            )
+        endif()
+    endif()
 endif()

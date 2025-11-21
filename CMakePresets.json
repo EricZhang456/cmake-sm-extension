@@ -36,6 +36,7 @@
         {
             "name": "win32",
             "hidden": true,
+            "inherits": "win",
             "architecture": {
                 "value": "Win32"
             }
@@ -43,6 +44,7 @@
         {
             "name": "win64",
             "hidden": true,
+            "inherits": "win",
             "architecture": {
                 "value": "x64"
             }
