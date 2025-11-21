@@ -30,6 +30,7 @@
             "name": "debug-32",
             "displayName": "Debug (32-bit)",
             "inherits": "debug",
+            "binaryDir": "build/debug-32",
             "architecture": {
                 "value": "x86"
             }
@@ -38,6 +39,7 @@
             "name": "release-32",
             "displayName": "Release (32-bit)",
             "inherits": "release",
+            "binaryDir": "build/release-32",
             "architecture": {
                 "value": "x86"
             }
@@ -46,6 +48,7 @@
             "name": "debug-64",
             "displayName": "Debug (64-bit)",
             "inherits": "debug",
+            "binaryDir": "build/debug-64",
             "architecture": {
                 "value": "x86_64"
             }
@@ -54,6 +57,7 @@
             "name": "release-64",
             "displayName": "Release (64-bit)",
             "inherits": "release",
+            "binaryDir": "build/release-64",
             "architecture": {
                 "value": "x86_64"
             }
