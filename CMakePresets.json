@@ -12,7 +12,6 @@
             "name": "debug",
             "inherits": "default",
             "hidden": true,
-            "binaryDir": "build/debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
@@ -21,45 +20,113 @@
             "name": "release",
             "inherits": "default",
             "hidden": true,
-            "binaryDir": "build/release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
+
         {
-            "name": "debug-32",
-            "displayName": "Debug (32-bit)",
+            "name": "debug-win",
             "inherits": "debug",
-            "binaryDir": "build/debug-32",
-            "architecture": {
-                "value": "x86"
-            }
+            "generator": "Visual Studio 18 2026"
         },
         {
-            "name": "release-32",
-            "displayName": "Release (32-bit)",
+            "name": "release-win",
             "inherits": "release",
-            "binaryDir": "build/release-32",
+            "generator": "Visual Studio 18 2026"
+        },
+
+        {
+            "name": "debug-win32",
+            "displayName": "Debug (Windows 32-bit)",
+            "inherits": "debug-win",
+            "binaryDir": "build/debug-win32",
             "architecture": {
-                "value": "x86"
+                "value": "Win32"
             }
         },
         {
-            "name": "debug-64",
-            "displayName": "Debug (64-bit)",
+            "name": "release-win32",
+            "displayName": "Release (Windows 32-bit)",
+            "inherits": "release-win",
+            "binaryDir": "build/release-win32",
+            "architecture": {
+                "value": "Win32"
+            }
+        },
+        {
+            "name": "debug-win64",
+            "displayName": "Debug (Windows 64-bit)",
+            "inherits": "debug-win",
+            "binaryDir": "build/debug-win64",
+            "architecture": {
+                "value": "x64"
+            }
+        },
+        {
+            "name": "release-win64",
+            "displayName": "Release (Windows 64-bit)",
+            "inherits": "release-win",
+            "binaryDir": "build/release-win64",
+            "architecture": {
+                "value": "x64"
+            }
+        },
+
+        {
+            "name": "debug-linux32",
+            "displayName": "Debug (Linux 32-bit)",
             "inherits": "debug",
-            "binaryDir": "build/debug-64",
+            "binaryDir": "build/debug-linux32",
             "architecture": {
-                "value": "x86_64"
+                "value": "x86",
+                "strategy": "external"
+            },
+            "environment": {
+                "CFLAGS": "-m32",
+                "CXXFLAGS": "-m32"
             }
         },
         {
-            "name": "release-64",
-            "displayName": "Release (64-bit)",
+            "name": "release-linux32",
+            "displayName": "Release (Linux 32-bit)",
             "inherits": "release",
-            "binaryDir": "build/release-64",
+            "binaryDir": "build/release-linux32",
             "architecture": {
-                "value": "x86_64"
+                "value": "x86",
+                "strategy": "external"
+            },
+            "environment": {
+                "CFLAGS": "-m32",
+                "CXXFLAGS": "-m32"
+            }
+        },
+        {
+            "name": "debug-linux64",
+            "displayName": "Debug (Linux 64-bit)",
+            "inherits": "debug",
+            "binaryDir": "build/debug-linux64",
+            "architecture": {
+                "value": "amd64",
+                "strategy": "external"
+            },
+            "environment": {
+                "CFLAGS": "-m64",
+                "CXXFLAGS": "-m64"
+            }
+        },
+        {
+            "name": "release-linux64",
+            "displayName": "Release (Linux 64-bit)",
+            "inherits": "release",
+            "binaryDir": "build/release-linux64",
+            "architecture": {
+                "value": "amd64",
+                "strategy": "external"
+            },
+            "environment": {
+                "CFLAGS": "-m64",
+                "CXXFLAGS": "-m64"
             }
         }
     ]
